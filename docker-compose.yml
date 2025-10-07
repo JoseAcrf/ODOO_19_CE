@@ -2,35 +2,43 @@ version: '3.8'
 
 services:
   db:
-    container_name: db_instance_1
     image: postgres:15
+    container_name: odoo19_db
     restart: unless-stopped
     environment:
       POSTGRES_DB: odoo
       POSTGRES_USER: odoo
-      POSTGRES_PASSWORD: odoo
+      POSTGRES_PASSWORD_FILE: /run/secrets/postgresql_password
+      PGDATA: /var/lib/postgresql/data/pgdata
     volumes:
-      - ./db-data:/var/lib/postgresql/data
+      - odoo-db-data:/var/lib/postgresql/data/pgdata
+    secrets:
+      - postgresql_password
 
-  odoo:
-    container_name: odoo_instance_1
-    build:
-      context: ./odoo-19.0
-      dockerfile: Dockerfile
+  web:
+    image: odoo:19.0
+    container_name: odoo19_web
     depends_on:
       - db
     ports:
-      - "8082:8069"
+      - "8069:8069"
     volumes:
-      - ./odoo-data:/var/lib/odoo
-      - ./addons:/mnt/extra-addons
+      - odoo-web-data:/var/lib/odoo
+      - ./odoo-19.0:/opt/odoo
       - ./odoo-19.0/odoo.conf:/etc/odoo/odoo.conf
-      - ./odoo-19.0/wait-for-psql.py:/usr/local/bin/wait-for-psql.py
+      - ./addons:/mnt/extra-addons
     environment:
-      HOST: db
-      PORT: 5432
-      USER: odoo
-      PASSWORD: odoo
-      ODOO_RC: /etc/odoo/odoo.conf
-    entrypoint: ["/entrypoint.sh", "odoo"]
+      - PASSWORD_FILE=/run/secrets/postgresql_password
+      - ODOO_RC=/etc/odoo/odoo.conf
+    entrypoint: ["/opt/odoo/entrypoint.sh", "odoo"]
+    secrets:
+      - postgresql_password
     restart: unless-stopped
+
+volumes:
+  odoo-web-data:
+  odoo-db-data:
+
+secrets:
+  postgresql_password:
+    file: odoo_pg_pass
