@@ -24,14 +24,14 @@ services:
       - ./odoo-data:/var/lib/odoo
       - ./addons:/mnt/extra-addons
       - ./odoo-19.0/odoo.conf:/etc/odoo/odoo.conf
-      - ./odoo-19.0/entrypoint.sh:/entrypoint.sh
+      - ./odoo-19.0/entrypoint.sh:/opt/odoo/entrypoint.sh
       - ./odoo-19.0/wait-for-psql.py:/usr/local/bin/wait-for-psql.py
     environment:
       HOST: db
       USER: odoo
       PASSWORD: odoo
       ODOO_RC: /etc/odoo/odoo.conf
-    entrypoint: ["/entrypoint.sh", "odoo"]
+    entrypoint: ["/opt/odoo/entrypoint.sh", "odoo"]
     restart: unless-stopped
 
 volumes:
