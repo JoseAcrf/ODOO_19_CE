@@ -11,7 +11,7 @@ services:
       POSTGRES_PASSWORD_FILE: /run/secrets/postgresql_password
       PGDATA: /var/lib/postgresql/data/pgdata
     volumes:
-      - odoo-db-data:/var/lib/postgresql/data/pgdata
+      - ./db-data:/var/lib/postgresql/data/pgdata
     secrets:
       - postgresql_password
 
@@ -23,14 +23,15 @@ services:
     ports:
       - "8069:8069"
     volumes:
-      - odoo-web-data:/var/lib/odoo
-      - ./odoo-19.0:/opt/odoo
-      - ./odoo-19.0/odoo.conf:/etc/odoo/odoo.conf
+      - ./odoo-data:/var/lib/odoo
       - ./addons:/mnt/extra-addons
+      - ./odoo-19.0/odoo.conf:/etc/odoo/odoo.conf
+      - ./odoo-19.0/entrypoint.sh:/entrypoint.sh
+      - ./odoo-19.0/wait-for-psql.py:/usr/local/bin/wait-for-psql.py
     environment:
       - PASSWORD_FILE=/run/secrets/postgresql_password
       - ODOO_RC=/etc/odoo/odoo.conf
-    entrypoint: ["/opt/odoo/entrypoint.sh", "odoo"]
+    entrypoint: ["/entrypoint.sh", "odoo"]
     secrets:
       - postgresql_password
     restart: unless-stopped
