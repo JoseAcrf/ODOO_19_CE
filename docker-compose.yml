@@ -25,11 +25,11 @@ services:
       - /opt/odoo/ODOO_19_CE/addons:/mnt/extra-addons
       - /opt/odoo/ODOO_19_CE/odoo-19/odoo.conf:/opt/odoo/odoo.conf
       - /opt/odoo/ODOO_19_CE/odoo-19/wait-for-psql.py:/opt/odoo/wait-for-psql.py
-      - /opt/odoo/ODOO_19_CE/scripts/entrypoint.sh:/entrypoint.sh
+      - /opt/odoo/ODOO_19_CE/scripts/entrypoint.sh:/opt/scripts/entrypoint.sh
     environment:
       HOST: db
       USER: odoo
       PASSWORD: odoo
       ODOO_RC: /opt/odoo/odoo.conf
-    entrypoint: ["/entrypoint.sh", "odoo"]
+    entrypoint: ["/opt/scripts/entrypoint.sh", "odoo"]
     restart: unless-stopped
