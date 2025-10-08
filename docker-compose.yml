@@ -3,7 +3,7 @@ version: '3.8'
 services:
   db:
     image: postgres:15
-    container_name: odoo19_db
+    container_name: odoo19_0000_db
     restart: unless-stopped
     environment:
       POSTGRES_DB: odoo
@@ -15,21 +15,21 @@ services:
 
   web:
     image: odoo:19.0
-    container_name: odoo19_web
+    container_name: odoo19_0000_web
     depends_on:
       - db
     ports:
-      - "8069:8069"
+      - "8070:8069"
     volumes:
       - ./odoo-data:/var/lib/odoo
       - ./addons:/mnt/extra-addons
-      - ./odoo-19/odoo.conf:/opt/odoo/odoo.conf
-      - ./odoo-19/wait-for-psql.py:/opt/odoo/wait-for-psql.py
-      - ./scripts/entrypoint.sh:/custom-entrypoint.sh
+      - ./odoo.conf:/opt/odoo/odoo.conf
+      - ./wait-for-psql.py:/opt/odoo/wait-for-psql.py
+      - ./scripts/entrypoint.sh:/entrypoint.sh
     environment:
       HOST: db
       USER: odoo
       PASSWORD: odoo
       ODOO_RC: /opt/odoo/odoo.conf
-    entrypoint: ["/custom-entrypoint.sh", "odoo"]
+    entrypoint: ["/entrypoint.sh", "odoo"]
     restart: unless-stopped
