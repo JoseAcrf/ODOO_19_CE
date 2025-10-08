@@ -25,7 +25,7 @@ services:
       - ./addons:/mnt/extra-addons
       - ./odoo-19.0/odoo.conf:/opt/odoo/odoo.conf
       - ./odoo-19.0/entrypoint.sh:/opt/odoo/entrypoint.sh
-      - ./odoo-19.0/wait-for-psql.py:/usr/local/bin/wait-for-psql.py
+      - ./odoo-19.0/wait-for-psql.py:/opt/odoo/wait-for-psql.py
     environment:
       HOST: db
       USER: odoo
@@ -37,3 +37,4 @@ services:
 volumes:
   odoo-web-data:
   odoo-db-data:
+
