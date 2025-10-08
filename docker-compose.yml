@@ -12,25 +12,24 @@ services:
       PGDATA: /var/lib/postgresql/data/pgdata
     volumes:
       - /opt/odoo/ODOO_19_CE/db-data:/var/lib/postgresql/data/pgdata
-services:
-web:
-  image: odoo:19.0
-  container_name: odoo19_web
-  depends_on:
-    - db
-  ports:
-    - "8069:8069"
-  volumes:
-    - /opt/odoo/ODOO_19_CE/odoo-data:/var/lib/odoo
-    - /opt/odoo/ODOO_19_CE/addons:/mnt/extra-addons
-    - /opt/odoo/ODOO_19_CE/odoo-19/odoo.conf:/opt/odoo/odoo.conf
-    - /opt/odoo/ODOO_19_CE/odoo-19/wait-for-psql.py:/opt/odoo/wait-for-psql.py
-    - /opt/odoo/ODOO_19_CE/scripts/entrypoint.sh:/entrypoint.sh
-  environment:
-    HOST: db
-    USER: odoo
-    PASSWORD: odoo
-    ODOO_RC: /opt/odoo/odoo.conf
-  entrypoint: ["/entrypoint.sh", "odoo"]
-  restart: unless-stopped
 
+  web:
+    image: odoo:19.0
+    container_name: odoo19_web
+    depends_on:
+      - db
+    ports:
+      - "8069:8069"
+    volumes:
+      - /opt/odoo/ODOO_19_CE/odoo-data:/var/lib/odoo
+      - /opt/odoo/ODOO_19_CE/addons:/mnt/extra-addons
+      - /opt/odoo/ODOO_19_CE/odoo-19/odoo.conf:/opt/odoo/odoo.conf
+      - /opt/odoo/ODOO_19_CE/odoo-19/wait-for-psql.py:/opt/odoo/wait-for-psql.py
+      - /opt/odoo/ODOO_19_CE/scripts/entrypoint.sh:/entrypoint.sh
+    environment:
+      HOST: db
+      USER: odoo
+      PASSWORD: odoo
+      ODOO_RC: /opt/odoo/odoo.conf
+    entrypoint: ["/entrypoint.sh", "odoo"]
+    restart: unless-stopped
