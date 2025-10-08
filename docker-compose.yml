@@ -11,7 +11,7 @@ services:
       POSTGRES_PASSWORD: odoo
       PGDATA: /var/lib/postgresql/data/pgdata
     volumes:
-      - ./db-data:/var/lib/postgresql/data/pgdata
+      - odoo-db-data:/var/lib/postgresql/data/pgdata
 
   web:
     image: odoo:19.0
@@ -21,11 +21,11 @@ services:
     ports:
       - "8069:8069"
     volumes:
-      - ./odoo-data:/var/lib/odoo
-      - ./addons:/mnt/extra-addons
-      - ./odoo-19.0/odoo.conf:/opt/odoo/odoo.conf
-      - ./odoo-19.0/entrypoint.sh:/opt/odoo/entrypoint.sh
-      - ./odoo-19.0/wait-for-psql.py:/opt/odoo/wait-for-psql.py
+      - odoo-web-data:/var/lib/odoo
+      - /opt/odoo/addons:/mnt/extra-addons
+      - /opt/odoo/odoo-19.0/odoo.conf:/opt/odoo/odoo.conf
+      - /opt/odoo/odoo-19.0/entrypoint.sh:/opt/odoo/entrypoint.sh
+      - /opt/odoo/odoo-19.0/wait-for-psql.py:/opt/odoo/wait-for-psql.py
     environment:
       HOST: db
       USER: odoo
@@ -37,4 +37,3 @@ services:
 volumes:
   odoo-web-data:
   odoo-db-data:
-
