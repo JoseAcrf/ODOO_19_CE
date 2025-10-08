@@ -31,10 +31,11 @@ services:
       USER: odoo
       PASSWORD: odoo
       ODOO_RC: /opt/odoo/odoo.conf
-    entrypoint: ["/opt/script/entrypoint.sh", "odoo"]
+    entrypoint: ["/opt/scripts/entrypoint.sh", "odoo"]
     restart: unless-stopped
 
 volumes:
   odoo-web-data:
   odoo-db-data:
+
 
