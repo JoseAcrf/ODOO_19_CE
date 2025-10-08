@@ -12,7 +12,7 @@ services:
       PGDATA: /var/lib/postgresql/data/pgdata
     volumes:
       - /opt/odoo/ODOO_19_CE/db-data:/var/lib/postgresql/data/pgdata
-
+services:
 web:
   image: odoo:19.0
   container_name: odoo19_web
@@ -33,3 +33,4 @@ web:
     ODOO_RC: /opt/odoo/odoo.conf
   entrypoint: ["/entrypoint.sh", "odoo"]
   restart: unless-stopped
+
